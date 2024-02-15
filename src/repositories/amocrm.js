@@ -54,7 +54,7 @@ export async function editGroupsAmocrm(enums, access_token, id) {
     };
 }
 
-export const getAmoStudent = async (req, res) => {
+export const getAmoStudent = async (req, res, status) => {
   try {
     const { DOMAIN } = environments;
     let { amo_access } = await getTokens();
@@ -93,7 +93,7 @@ export const getAmoStudent = async (req, res) => {
       let found = modmeGroups.some(function (element) {
         return element.code === objLead.group;
       });
-      if (objLead.group && objLead.activated_date && objLead.phones && objLead.name && objLead.added_date && found ) {
+      if (objLead.group &&  objLead.phones && objLead.name && (status=='activate'?objLead.activated_date:objLead.added_date) && found ) {
         return objLead;
       } else {
         await axios.patch(
@@ -115,9 +115,11 @@ export const getAmoStudent = async (req, res) => {
   }
 };
 
-export const mountStudentData=async (req,res)=>{
+
+
+export const mountStudentData=async (req,res, status)=>{
     try {
-      let studentData = await getAmoStudent(req, res);
+      let studentData = await getAmoStudent(req, res, status);
       if (studentData == null) {
         return null;
       }

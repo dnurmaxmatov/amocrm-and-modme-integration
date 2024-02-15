@@ -2,7 +2,7 @@ import environments from "../config/environments.js";
 import axios from "axios";
 import catchFn from "../utils/catch.js";
 import { getTokens } from "../services/get-tokens.js";
-import mt from 'moment'
+import mt from "moment";
 
 export const restoreFromTrash = async (studentId) => {
   try {
@@ -32,8 +32,6 @@ export const restoreFromTrash = async (studentId) => {
     catchFn(error, "Error with restore");
   }
 };
-
-
 
 export async function getModmeGroups() {
   try {
@@ -134,19 +132,22 @@ export const findGroupId = async (group) => {
 
 export const checkExistsInGroup = async (groupId, studentId, added_date) => {
   try {
-    const {modme_token}=await getTokens()
+    const { modme_token } = await getTokens();
     let students = await axios.get(
       `${environments.DOMAIN_MODME}/v1/group/${groupId}/students?all=1`,
       {
         headers: {
           Authorization: `Bearer ${modme_token}`,
-          Referer: environments.MODME_REFERER
-        }
+          Referer: environments.MODME_REFERER,
+        },
       }
     );
     let student = students.data.find((el) => el.id == studentId);
     if (!student) {
       await addToGroup(groupId, studentId, added_date);
+    }
+    if(student.status==6){
+      await backToTrial(studentId, groupId, modme_token);
     }
     return true;
   } catch (error) {
@@ -233,17 +234,36 @@ export const activateStudent = async (groupId, studentId, activated_date) => {
   }
 };
 
+const backToTrial = async (studentId, groupId, token) => {
+  try {
+    const data = {
+      status: 1,
+      type: "backToTrial",
+      activated_date: "",
+    };
+
+   await axios.put(
+      `https://api.modme.uz/v1/group/${groupId}/student/${studentId}/1`,
+      data,
+      {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,uz;q=0.7",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Origin: "https://cabinet.owa.uz",
+          Referer: environments.MODME_REFERER,
+        },
+      }
+    );
+  } catch (error) {
+    catchFn(error, "Error with back to trial");
+  }
+};
+
 function arraysAreEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
   }
   return arr1.every((value, index) => value === arr2[index]);
 }
-
-
-
-
-
-
-
-

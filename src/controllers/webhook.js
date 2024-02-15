@@ -29,13 +29,35 @@ export const webHook = async (req, res) => {
     let groupId=await findGroupId(studentData.group)
     const exists=await checkExistsInGroup(groupId, studentId, studentData.added_date)
     if(exists){
-      await activateStudent(groupId, studentId, studentData.activated_date)
       return true
     }
-
     return false
 
   } catch (error) {
     catchFn(error, 'Error with webhook')
   }
 };
+
+export const activate=async (req, res)=>{
+  try {
+    const studentData = await mountStudentData(req, res, 'activate');
+    if (!studentData) {
+      return true;
+    }
+     let studentId = await getStudentList(studentData);
+    let groupId = await findGroupId(studentData.group);
+    const exists = await checkExistsInGroup(
+      groupId,
+      studentId,
+      studentData.added_date
+    );
+     if (exists) {
+      await activateStudent(groupId, studentId, studentData.activated_date)
+       return true;
+     }
+     return false;
+  } catch (error) {
+      catchFn(error, 'Error with activate in group hook')
+  };
+  
+}
