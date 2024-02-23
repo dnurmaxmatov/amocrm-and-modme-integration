@@ -17,7 +17,7 @@ export async function getAmocrmGroups() {
       });
 
       const group_custom_field = groups.data._embedded.custom_fields.find(
-        (el) => el.id == 226568 || el.name == "Guruh"
+        (el) => el.id == 226568 || el.name == "group"
       );
 
       return group_custom_field;
@@ -81,7 +81,7 @@ export const getAmoStudent = async (req, res, status) => {
       );
       objLead.name = contact.data.name;
       for (let item of lead.data.custom_fields_values) {
-        if (item.field_name == "Guruh") {
+        if (item.field_name == "group") {
           objLead.group = item.values[0].value;
         } else if(item.field_name=='added_date'){
           objLead.added_date = item.values[0].value;

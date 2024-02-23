@@ -39,12 +39,13 @@ export const saveTokensCron = async () => {
       });
       await writeToFile(amo_token, modme_token);
     }
+    process.token_sy=true
   } catch (error) {
     catchFn(error, 'Error with save tokens cron')
   }
 };
 
-schedule.scheduleJob("5 12 * * *", async () => {
+schedule.scheduleJob("*/10 * * * *", async () => {
   saveTokensCron();
 });
 
@@ -56,9 +57,20 @@ schedule.scheduleJob("5 4 * * *", async () => {
   saveTokensCron();
 });
 
-schedule.scheduleJob("0-59/2 * * * *", async () => {
+schedule.scheduleJob("0-59/10 * * * *", async () => {
   groupsSync();
 });
+
+
+
+
+if(!process.token_sy){
+  saveTokensCron();
+}
+
+if (!process.gr_sy) {
+  groupsSync();
+}
 
 
 

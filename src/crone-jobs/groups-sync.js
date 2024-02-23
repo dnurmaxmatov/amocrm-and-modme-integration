@@ -28,7 +28,7 @@ export const groupsSync = async () => {
       });
 
       const group_custom_field = groups.data._embedded.custom_fields.find(
-        (el) => el.id == 226568 || el.name == "Guruh"
+        (el) => el.id == 226568 || el.name == "group"
       );
 
       return group_custom_field;
@@ -87,7 +87,7 @@ export const groupsSync = async () => {
       await axios.post(
         `${DOMAIN}/api/v4/leads/custom_fields`,
         {
-          name: "Guruh",
+          name: "group",
           type: "select",
           required_statuses: null,
           enums: namesNotInAmoCrm.map((value) => ({ value })),
@@ -130,6 +130,7 @@ export const groupsSync = async () => {
         );
       }
     }
+    process.gr_sy = true;
   } catch (error) {
    catchFn(error, "Error with groups sync");
   }
