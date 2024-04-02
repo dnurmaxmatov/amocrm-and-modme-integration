@@ -4,11 +4,11 @@ import groupsSync from './groups-sync.js'
 
 
 
-schedule.scheduleJob("0 * * * *", async () => {
+schedule.scheduleJob("*/3 * * * *", async () => {
     refreshModmeToken()
 })
 
 
-schedule.scheduleJob("*/5 * * * *", async () => {
-    groupsSync()
-})
+// schedule.scheduleJob("*/5 * * * *", async () => {
+//     groupsSync()
+// })
