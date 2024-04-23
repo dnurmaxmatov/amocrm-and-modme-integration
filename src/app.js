@@ -12,12 +12,6 @@ const { PORT } = env
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/okk', async (req, res) => {
-    const token = await getModmeToken()
-
-    return res.json(token)
-})
-
 app.use('/', router)
 
 
