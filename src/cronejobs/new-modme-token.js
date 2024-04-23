@@ -8,8 +8,8 @@ import { send_error } from "../services/error-telegram.js";
 export default async () => {
     try {
         const { MODME_LOGIN, MODME_PASS, MODME_REFERER, DOMAIN_MODME } = env
-        const file_path = path.join(process.cwd(), 'private', 'token.json')
-        const dir_path = path.join(process.cwd(), 'private')
+        const file_path = path.join(process.cwd(), 'src', 'private', 'token.json')
+        const dir_path = path.join(process.cwd(), 'src', 'private')
         if (!fs.existsSync(dir_path)) {
             fs.mkdirSync(dir_path)
         }
@@ -25,6 +25,7 @@ export default async () => {
             }
         })
         if (token.status == 200 && token.data) {
+            console.log(token.data);
             fs.writeFileSync(
                 file_path,
                 JSON.stringify({

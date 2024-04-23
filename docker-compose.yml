@@ -8,6 +8,18 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
+      PORT:
+      DOMAIN:
+      DOMAIN_MODME:
+      LONG_TERM_TOKEN:
+      REDIRECT_URL:
+      BOT_TOKEN:
+      CHAT_ID:
+      MODME_LOGIN:
+      MODME_PASS:
+      MODME_REFERER:
+      BRANCH_ID: 318
+      COMPANY_ID: 303
     ports:
       - 5567:5567
     depends_on:

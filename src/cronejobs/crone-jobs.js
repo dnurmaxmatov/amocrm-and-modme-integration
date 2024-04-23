@@ -4,8 +4,9 @@ import groupsSync from './groups-sync.js'
 
 
 
-schedule.scheduleJob("*/3 * * * *", async () => {
+schedule.scheduleJob("* * * * *", async () => {
     refreshModmeToken()
+    console.log(1111);
 })
 
 

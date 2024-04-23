@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const getModmeToken = async () => {
     try {
-        const filePath = path.join(process.cwd(), "private", "token.json");
+        const filePath = path.join(process.cwd(), 'src', "private", "token.json");
         let data = fs.readFileSync(filePath, "utf-8", null);
         data = JSON.parse(data);
         return data.access_token;
