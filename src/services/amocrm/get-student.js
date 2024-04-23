@@ -54,7 +54,7 @@ export const getAmoStudent = async (req, res, status) => {
             if (objLead.group && objLead.phones && objLead.name && (status == 'activate' ? objLead.activated_date : objLead.added_date) && found) {
                 return objLead;
             } else {
-                if (status == 'activate' && !objLead.added_date && !objLead.group && !found) {
+                if (status == 'activate' && (!objLead.added_date || !objLead.group) && !found) {
                     const first_status = await StatusModel.findOne({ id }).sort({ _id: 1 })
                     const st_change = await axios.patch(
                         `${DOMAIN}/api/v4/leads/${leads.status[0].id}`,
@@ -73,6 +73,8 @@ export const getAmoStudent = async (req, res, status) => {
                         await StatusModel.deleteMany({ id })
                     }
                     return null
+                } else if (status != 'activate' && (!objLead.added_date || !objLead.group || !found) && (Number(leads.status[0].old_status_id) == 142)) {
+                    return null
                 }
                 await axios.patch(
                     `${DOMAIN}/api/v4/leads/${leads.status[0].id}`,
@@ -85,7 +87,6 @@ export const getAmoStudent = async (req, res, status) => {
                         },
                     }
                 );
-
 
                 return null;
             }

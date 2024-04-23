@@ -9,6 +9,7 @@ export const mountStudentData = async (req, res, status) => {
         }
         let data = studentData.phones
             .map((item) => {
+                item.value=item.value.replace(/[- ]/g, '')
                 if (
                     /^(\+998|998)?(3{2}|7{2}|8{2}|2{2}|5{2}|(9[013-57-9]))\d{7}$/.test(
                         item.value

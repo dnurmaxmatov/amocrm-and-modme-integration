@@ -8,5 +8,7 @@ export const send_error = async (error, msg) => {
             chat_id: env.CHAT_ID,
             text: `*${msg}*\n\n${error}`
         }
-    )
+    ).catch(e => {
+        console.log(e)
+    })
 }
